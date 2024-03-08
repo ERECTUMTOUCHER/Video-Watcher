@@ -1,154 +1,104 @@
+document.addEventListener('DOMContentLoaded', function() {
+    var sliderVideoList = document.querySelector('.series-videos-carousel');
+    var visibleVideoSlidesDesktop = 3;
+    var currentSlide = 0;
 
+    // Initialize video slider
+    var videoWrappers = document.querySelectorAll('.single-video-wrapper');
+    var videoSlides = document.querySelectorAll('.single-video-wrapper.visible');
+    var totalSlides = videoSlides.length;
+    var slideWidth = videoSlides[0].offsetWidth;
+    var sliderWidth = totalSlides * slideWidth;
+    sliderVideoList.style.width = sliderWidth + 'px';
+    sliderVideoList.style.transform = 'translateX(0px)';
 
-$(document).ready(function() {
-
-    // slick variables
-    var sliderVideoList = $('.series-videos-carousel'),
-        sliderLightboxList = $('.person-videos-carousel'),
-        visibleVideoSlidesDesktop = 3,
-        visibleLightboxSlides = 3,
-        visibleSlidesMobile = 1;
-
-      
-
-    // video slider
-    sliderVideoList.slick({
-        infinite: false,
-        draggable: false,
-        swipeToSlide: true,
-        slidesToShow: visibleVideoSlidesDesktop,
-        slidesToScroll: visibleVideoSlidesDesktop,
-        arrows: true,
-        rows: 0,
-        prevArrow: "<div class='slick-prev'><i class='fa fa-angle-left' aria-hidden='true'></i></div>"A,
-        nextArrow: "<div class='slick-next'><i class='fa fa-angle-right' aria-hidden='true'></i></div>",
-        responsive: [
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: visibleSlidesMobile,
-                slidesToScroll: visibleSlidesMobile,
-              }
-            }
-        ],
+    // Toggle active class for video slider
+    videoWrappers.forEach(function(wrapper) {
+        wrapper.addEventListener('click', function() {
+            videoWrappers.forEach(function(wrapper) {
+                wrapper.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
     });
 
-    sliderVideoList.find('.slick-slide').addClass('visible'); // init all as visible
+    // Sorting categories function
+    var videoCategories = document.querySelectorAll('ul.series-categories-list li.video-cat');
+    videoCategories.forEach(function(category) {
+        category.addEventListener('click', function() {
+            if (!this.classList.contains('active')) {
+                var categoryClass = this.getAttribute('data-category');
+                videoCategories.forEach(function(category) {
+                    category.classList.remove('active');
+                });
+                this.classList.add('active');
 
+                videoSlides.forEach(function(slide) {
+                    slide.classList.remove('visible');
+                    if (categoryClass === 'all-videos') {
+                        slide.classList.add('visible');
+                    } else if (slide.getAttribute('data-category').includes(categoryClass)) {
+                        slide.classList.add('visible');
+                    }
+                });
 
-
-    // make all slides and images within slides equal height
-    function videoSlidesHeight() {
-        var videoSliderImgHeight = $('.single-video-item').outerHeight() - 5;
-
-          // $('.single-video-item img').css({
-          //       'height': videoSliderImgHeight,
-          //       'object-fit': 'cover',
-          //   });
-
-        $('.series-videos-carousel .slick-prev, .series-videos-carousel .slick-next').css('height', videoSliderImgHeight);
-    }
-
-    videoSlidesHeight();
-    $(window).resize(videoSlidesHeight);
-
-
-
-    // toggle active for video slider
-    $('.single-video-wrapper:first-of-type').addClass('active');
-
-    $('.single-video-wrapper').on('click', function() {
-        $('.single-video-wrapper').removeClass('active');
-       $(this).addClass('active'); 
-    });
-
-
-    // episode button function
-    function episodeBtn(description, button) {
-        description.css({'display':'none'});
-        button.on('click', function() {
-            if( description.is(':visible') ) {
-                description.slideUp();
-                button.removeClass('expanded');
-            } else {
-                description.slideDown();  
-                button.addClass('expanded');      
+                // Reset video slider
+                currentSlide = 0;
+                sliderVideoList.style.transform = 'translateX(0px)';
             }
         });
+    });
+
+    // Handle disabled arrows
+    var prevArrow = document.querySelector('.series-videos-carousel .slick-prev');
+    var nextArrow = document.querySelector('.series-videos-carousel .slick-next');
+
+    function updateArrows() {
+        if (currentSlide === 0) {
+            prevArrow.classList.add('slick-disabled');
+        } else {
+            prevArrow.classList.remove('slick-disabled');
+        }
+
+        if (currentSlide >= totalSlides - visibleVideoSlidesDesktop) {
+            nextArrow.classList.add('slick-disabled');
+        } else {
+            nextArrow.classList.remove('slick-disabled');
+        }
     }
 
-    episodeBtn($('.episode-wrapper .episode-desc'), $('.episode-wrapper .episode-info-btn'));
-    episodeBtn($('.lb-episode-info .episode-desc'), $('.lb-episode-info .episode-info-btn'));
+    updateArrows();
 
-    
+    // Handle video click
+    videoWrappers.forEach(function(wrapper) {
+        wrapper.addEventListener('click', function() {
+            var videoID = this.getAttribute('data-youtube-id');
+            var episodeItem = document.querySelector('.episode-wrapper .episode-item');
+            episodeItem.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoID + '?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            episodeItem.querySelector('iframe').src += "&autoplay=1&showinfo=0";
+            window.scrollTo({
+                top: document.querySelector('.episode-wrapper').offsetTop,
+                behavior: 'smooth'
+            });
+        });
+    });
 
-    // sorting categories function
-    // hides/shows videos based on category
-    $('ul.series-categories-list li.video-cat').on('click', function() {
-        if( !$(this).hasClass('active') ) {
-            var categoryClass = $(this).attr('data-category');
-
-            $('ul.series-categories-list li.video-cat').removeClass('active');
-            $(this).addClass('active');
-
-            if( $(this).data('category') === 'all-videos' ) {
-                $('.single-video-wrapper').removeClass('visible').fadeOut('fast').promise().done(function() {
-                    $('.single-video-wrapper').addClass('visible').fadeIn('fast');
-                });
-            } else {
-                $('.single-video-wrapper').removeClass('visible').fadeOut('fast').promise().done(function() {
-                    $('.single-video-wrapper[data-category*="' + categoryClass + '"]').addClass('visible').fadeIn('fast');
-                });
-            }
-
-            sliderVideoList.slick('slickGoTo', 0);
+    // Handle arrow clicks
+    prevArrow.addEventListener('click', function() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            var slideOffset = -currentSlide * slideWidth;
+            sliderVideoList.style.transform = 'translateX(' + slideOffset + 'px)';
+            updateArrows();
         }
     });
 
-    // grays out and disables slick arrows if user reaches the end
-    // mainly used for category sorting since it will generate blank slides after sort
-    sliderVideoList.on('afterChange',function(e, slick, currentSlide) {
-        var currentSlideNumber = currentSlide + 1; // currentSlide starts at 0
-
-        // returns all slides with 'visible' class in a new array
-        var visibleSlides = slick.$slides.filter(function(idx, e) {
-            return jQuery(e).hasClass('visible');
-        }).length;
-
-        console.log(visibleSlides);
-
-        if( currentSlideNumber + visibleVideoSlidesDesktop > visibleSlides ) {
-            // disable next button
-            $('.series-videos-carousel .slick-arrow.slick-next').addClass('slick-disabled').unbind('click');
-        } else {
-            $('.series-videos-carousel .slick-arrow.slick-next').removeClass('slick-disabled').bind('click', function() {
-                sliderVideoList.slick('slickNext');
-            });
+    nextArrow.addEventListener('click', function() {
+        if (currentSlide < totalSlides - visibleVideoSlidesDesktop) {
+            currentSlide++;
+            var slideOffset = -currentSlide * slideWidth;
+            sliderVideoList.style.transform = 'translateX(' + slideOffset + 'px)';
+            updateArrows();
         }
-
-        if( currentSlideNumber == 1 ) {
-            // disable prev button
-            $('.series-videos-carousel .slick-arrow.slick-prev').addClass('slick-disabled').unbind('click');
-        } else {
-            $('.series-videos-carousel .slick-arrow.slick-prev').removeClass('slick-disabled').bind('click', function() {
-                sliderVideoList.slick('slickPrev');
-            });
-        }
-
-        if( visibleSlides <= 3 ) {
-            $('.series-videos-carousel .slick-arrow').fadeOut();
-        } else {
-            $('.series-videos-carousel .slick-arrow').fadeIn();
-        }
-    });
-  
-  
-    $('.single-video-wrapper').on('click', function() {   
-        var videoID = $(this).attr('data-youtube-id');
-
-        $('.episode-wrapper .episode-item').html('<iframe src="https://www.youtube.com/embed/' + videoID + '?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
-        $('.episode-wrapper .episode-item iframe')[0].src += "&autoplay=1&showinfo=0";
-
-        $('html, body').animate({scrollTop: $('.episode-wrapper').offset().top}, 400);
     });
 });
