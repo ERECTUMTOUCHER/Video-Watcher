@@ -3,83 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Section</title>
+    <title>Video Showcase</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<section>
-    <div class="video-section container">
-        <div class="series-info-wrapper container">
-            <!-- Placeholder for series information -->
-        </div>
-        <div class="series-categories-wrapper container">
-            <div class="series-categories-content">
-                <ul class="series-categories-list">
-                    <li class="video-cat active" data-category="all-videos">All Videos</li>
-                    <li class="video-cat" data-category="students">Students</li>
-                    <li class="video-cat" data-category="teachers">Teachers</li>
-                </ul>
-            </div>
-            <div class="series-videos-carousel">
-                <div class="single-video-wrapper" data-category="all-videos students" data-youtube-id="4NXQKvZMMTA?si=wqwa7fJaWKkTbGXR">
-                    <div class="single-video-content">
-                        <div class="single-video-item">
-                            <img src="https://img.youtube.com/vi/4NXQKvZMMTA/hqdefault.jpg" alt="Video thumbnail">
-                        </div>
-                        <div class="single-video-title">
-                            SAS Student Interview 1
-                        </div>
-                    </div>
-                </div>
-                <div class="single-video-wrapper" data-category="all-videos students" data-youtube-id="HdcUt2n6CzQ?si=04iQoB6MbpIBVRtH">
-                    <div class="single-video-content">
-                        <div class="single-video-item">
-                            <img src="https://img.youtube.com/vi/HdcUt2n6CzQ/hqdefault.jpg" alt="Video thumbnail">
-                        </div>
-                        <div class="single-video-title">
-                            SAS Student Interview 2
-                        </div>
-                    </div>
-                </div>
-                <div class="single-video-wrapper" data-category="all-videos students" data-youtube-id="nJzvvafDNQg?si=jGOUFOL5dpY7vLHe">
-                    <div class="single-video-content">
-                        <div class="single-video-item">
-                            <img src="https://img.youtube.com/vi/nJzvvafDNQg/hqdefault.jpg" alt="Video thumbnail">
-                        </div>
-                        <div class="single-video-title">
-                            SAS Student Interview 3
-                        </div>
-                    </div>
-                </div>
-                <div class="single-video-wrapper" data-category="all-videos teachers" data-youtube-id="uzWYeq5XpKU?si=p9IIzr7iGvE7Ykv_">
-                    <div class="single-video-content">
-                        <div class="single-video-item">
-                            <img src="https://img.youtube.com/vi/uzWYeq5XpKU/hqdefault.jpg" alt="Video thumbnail">
-                        </div>
-                        <div class="single-video-title">
-                            SAS Teacher Interview 2
-                        </div>
-                    </div>
-                </div>
-                <div class="single-video-wrapper" data-category="all-videos teachers" data-youtube-id="kTFwJIpQKiU?si=JRe67cFTsXcolBSc">
-                    <div class="single-video-content">
-                        <div class="single-video-item">
-                            <img src="https://img.youtube.com/vi/kTFwJIpQKiU/hqdefault.jpg" alt="Video thumbnail">
-                        </div>
-                        <div class="single-video-title">
-                            SAS Teacher Interview 3
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="episode-wrapper">
-            <div class="episode-item">
-                <!-- Placeholder for episode video -->
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/4NXQKvZMMTA?si=V1CRXNCdp-rFgcWi" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-        </div>
+    <div class="container">
+        <h1>Video Showcase</h1>
+        <div id="videoList"></div>
     </div>
-</section>
+    <script src="script.js"></script>
 </body>
 </html>
