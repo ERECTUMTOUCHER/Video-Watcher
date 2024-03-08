@@ -1,5 +1,13 @@
 /* CSS Styles */
 
+/* Ensure all content containers have proper styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Thumbnail container */
 .thumbnail-container {
     background-color: #fc7445;
     overflow: hidden;
@@ -7,35 +15,37 @@
     width: 100%;
 }
 
+/* Ensure thumbnail maintains aspect ratio */
 .thumbnail-height {
-    left: 0;
-    padding-top: 56.25%;
+    padding-top: 56.25%; /* 16:9 ratio */
     position: relative;
-    top: 0;
-    width: 100%;
 }
 
+/* Style thumbnail image */
 .thumbnail-container img.thumbnail {
     opacity: 0.65;
     width: 100%;
 }
 
+/* Style episode item */
 .episode-item {
-    padding-top: 56.25%;
+    padding-top: 56.25%; /* Maintain aspect ratio for embedded video */
     position: relative;
 }
 
+/* Ensure iframe fills the episode item */
 .episode-item iframe {
     height: 100%;
-    left: 0;
+    width: 100%;
     position: absolute;
     top: 0;
-    width: 100%;
+    left: 0;
 }
 
+/* Episode info button style */
 .episode-info-btn {
     background: #fc7445;
-    color: #fc7445;
+    color: #fff;
     cursor: pointer;
     display: inline-block;
     font: 20px 'Quicksand', sans-serif;
@@ -46,6 +56,7 @@
     text-transform: uppercase;
 }
 
+/* Episode info button icon style */
 .episode-info-btn span::before,
 .episode-info-btn span::after {
     background: white;
@@ -69,10 +80,12 @@
     width: 17px;
 }
 
+/* Expand the episode info button when active */
 .episode-info-btn.expanded span::before {
     transform: rotate(90deg);
 }
 
+/* Episode info styles */
 .episode-info h2 {
     margin-bottom: 10px;
 }
@@ -86,47 +99,12 @@
     margin: 30px 0 10px;
 }
 
-@media only screen and (min-width: 481px) and (max-width: 769px) {
-    .custom-play-btn {
-        height: 100px;
-        margin-left: -50px;
-        margin-top: -50px;
-        width: 100px;
-    }
-}
-
-@media only screen and (max-width: 480px) {
-    .custom-play-btn {
-        height: 70px;
-        margin-left: -35px;
-        margin-top: -35px;
-        width: 70px;
-    }
-
-    .series-categories-wrapper {
-        padding: 0;
-    }
-
-    ul.series-categories-list {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
-    }
-
-    ul.series-categories-list li.video-cat:first-child {
-        padding-left: 25px;
-    }
-
-    .single-video-title {
-        margin: 10px 0 30px 25px;
-        width: calc(100% - 40px);
-    }
-}
-
+/* Series categories wrapper styles */
 .series-categories-wrapper {
     padding-bottom: 40px;
 }
 
+/* Series categories list styles */
 ul.series-categories-list {
     border-bottom: 1px solid #fc7445;
     border-top: 1px solid #fc7445;
@@ -159,6 +137,7 @@ ul.series-categories-list li.video-cat.active {
     font-weight: bold;
 }
 
+/* Single video wrapper styles */
 .single-video-wrapper {
     cursor: pointer;
     opacity: .5;
@@ -166,9 +145,7 @@ ul.series-categories-list li.video-cat.active {
 
 .single-video-wrapper.active {
     opacity: 1;
-    -webkit-transition: opacity .15s ease-in;
-    -moz-transition: opacity .15s ease-in;
-    -o-transition: opacity .15s ease-in;
+    transition: opacity .15s ease-in;
 }
 
 .single-video-wrapper.active .single-video-title {
@@ -190,6 +167,7 @@ ul.series-categories-list li.video-cat.active {
 }
 
 @media only screen and (min-width: 480px) and (max-width: 769px) {
+    /* Responsive styles for medium screens */
     ul.series-categories-list {
         overflow-x: scroll;
         overflow-y: hidden;
@@ -198,5 +176,34 @@ ul.series-categories-list li.video-cat.active {
 
     .single-video-title {
         width: calc(100% - 20px);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Responsive styles for small screens */
+    .custom-play-btn {
+        height: 70px;
+        margin-left: -35px;
+        margin-top: -35px;
+        width: 70px;
+    }
+
+    .series-categories-wrapper {
+        padding: 0;
+    }
+
+    ul.series-categories-list {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    ul.series-categories-list li.video-cat:first-child {
+        padding-left: 25px;
+    }
+
+    .single-video-title {
+        margin: 10px 0 30px 25px;
+        width: calc(100% - 40px);
     }
 }
